@@ -89,6 +89,9 @@
               FROM t_article
               where is_delete = 0
               and status in (1)
+            <if test="articleId != null">
+                and id != #{articleId}
+            </if>
             <if test="topFlag != null">
                 and is_top = #{topFlag}
                 order by is_top desc, update_time desc

@@ -1,6 +1,7 @@
 package com.aurora.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSON;
 import com.aurora.model.dto.*;
 import com.aurora.entity.Article;
@@ -83,11 +84,16 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public TopAndFeaturedArticlesDTO listTopAndFeaturedArticles() {
         TopAndFeaturedArticlesDTO topAndFeaturedArticlesDTO = new TopAndFeaturedArticlesDTO();
+        Integer excludeArticleId = null;
         //获取置顶is_top = 1 的文章
         ArticleCardDTO topArticle =  getTopArticle();
         topAndFeaturedArticlesDTO.setTopArticle(topArticle);
+        if(ObjectUtil.isNotNull(topArticle)){//已经置顶的文章不需要在推荐栏目中展示
+            excludeArticleId = topArticle.getId();
+        }
+
         //获取推荐的文章is_featured = 1
-        List<ArticleCardDTO> recommendArticleList   =  recommendArticleList();
+        List<ArticleCardDTO> recommendArticleList   =  recommendArticleList(excludeArticleId);
         topAndFeaturedArticlesDTO.setFeaturedArticles(recommendArticleList);
 
 
@@ -102,13 +108,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return topAndFeaturedArticlesDTO;
     }
 
-    private List<ArticleCardDTO> recommendArticleList() {
-        List<ArticleCardDTO> articleCardDTOS = articleMapper.listTopAndFeaturedArticlesByParam(null, 1);
+    private List<ArticleCardDTO> recommendArticleList(Integer excludeArticleId) {
+        List<ArticleCardDTO> articleCardDTOS = articleMapper.listTopAndFeaturedArticlesByParam(null, 1,excludeArticleId);
         return articleCardDTOS;
     }
 
     private ArticleCardDTO getTopArticle() {
-        List<ArticleCardDTO> articleCardDTOS = articleMapper.listTopAndFeaturedArticlesByParam(1, null);
+        List<ArticleCardDTO> articleCardDTOS = articleMapper.listTopAndFeaturedArticlesByParam(1, null,null);
         if(CollectionUtil.isNotEmpty(articleCardDTOS)){
             return articleCardDTOS.get(0);
         }

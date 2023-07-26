@@ -17,7 +17,7 @@ import java.util.List;
 public interface ArticleMapper extends BaseMapper<Article> {
 
     List<ArticleCardDTO> listTopAndFeaturedArticles();
-    List<ArticleCardDTO> listTopAndFeaturedArticlesByParam(@Param("topFlag") Integer topFlag, @Param("featuredFlag") Integer featuredFlag);
+    List<ArticleCardDTO> listTopAndFeaturedArticlesByParam(@Param("topFlag") Integer topFlag, @Param("featuredFlag") Integer featuredFlag,@Param("articleId") Integer articleId);
 
     List<ArticleCardDTO> listArticles(@Param("current") Long current, @Param("size") Long size);
 

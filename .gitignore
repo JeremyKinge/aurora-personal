@@ -1,0 +1,6 @@
+/.idea/
+/aurora-springboot/.idea/
+/aurora-springboot/target/
+/aurora-vue/.idea/
+/aurora-vue/aurora-admin/node_modules/
+/aurora-vue/aurora-blog/node_modules/
